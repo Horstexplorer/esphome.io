@@ -68,8 +68,8 @@ mipi_csi:
   regulator (channel 3) itself. Defaults to `true`. Set this to `false` if another peripheral (for example
   a MIPI-DSI display configured through [`esp_ldo`](/components/esp_ldo/)) already powers that channel;
   attempting to acquire it twice fails and prevents the camera from starting.
-- **horizontal_flip** (*Optional*, boolean): Whether to flip the image horizontally. Defaults to `false`.
-- **vertical_flip** (*Optional*, boolean): Whether to flip the image vertically. Defaults to `false`.
+- **horizontal_flip** (*Optional*, boolean): Whether to flip the image horizontally.
+- **vertical_flip** (*Optional*, boolean): Whether to flip the image vertically.
 - **i2c_id** (*Optional*, [ID](/guides/configuration-types#id)): The ID of the [I²C bus](/components/i2c)
   the sensor is connected to, when using more than one bus.
 - **sccb_frequency** (**Required**, frequency): The clock frequency to use for the sensor's control bus
@@ -182,6 +182,9 @@ Leaving `init_ldo` at its default of `true` while the channel is already in use 
 - **`The sensor runs at N fps, so M fps is used instead`**: The sensor cannot run at the exact `framerate`
   requested. This is expected and only a warning; the closest rate the sensor can evenly divide down to is
   used automatically.
+- When a sensor outputs RAW pixel data with horizontal or vertical flipping enabled, the image may have a
+  color shift because the Bayer pattern no longer aligns with the sensor's mirror settings. Disabling the
+  corresponding `horizontal_flip` or `vertical_flip` option should restore the correct colors.
 - **`Frame buffer N holds ... bytes but a frame needs ...`**: The video driver's buffer is smaller than a
   full frame at the configured resolution/pixel format. This should not normally happen; please open an
   issue if it does.
